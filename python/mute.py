@@ -15,6 +15,7 @@ def loop():
                 if line == b'1':
                     print('on air!')
                     subprocess.Popen(('amixer', '-D', 'pulse', 'set', 'Capture', 'cap'), stdout=subprocess.PIPE)
+                    subprocess.Popen(('notify-send', '-t', '0', '!! ON AIR !!'), stdout=subprocess.PIPE)
             except KeyboardInterrupt:
                 print('Interrupted')
                 try:
