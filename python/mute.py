@@ -3,19 +3,20 @@ import logging
 import sys
 import os
 import subprocess
+from datetime import datetime
 
 def loop():
     with  serial.Serial('/dev/ttyUSB0') as ser:  # open serial port
         while True:
             try:
                 line = ser.read()   # read a '\n' terminated line
+                now = datetime.now()
                 if line == b'0':
-                    print('muted')
+                    print(now.strftime("%H:%M:%S") + ' - muted')
                     subprocess.Popen(('amixer', '-D', 'pulse', 'set', 'Capture', 'nocap'), stdout=subprocess.PIPE)
                 if line == b'1':
-                    print('on air!')
-                    subprocess.Popen(('amixer', '-D', 'pulse', 'set', 'Capture', 'cap'), stdout=subprocess.PIPE)
-                    subprocess.Popen(('notify-send', '-t', '0', '!! ON AIR !!'), stdout=subprocess.PIPE)
+                    print(now.strftime("%H:%M:%S") + ' - on air!')
+                    subprocess.Popen(('amixer', '-D', 'pulse', 'set', 'Capture', 'cap'), stdout=subprocess.PIPE)                    
             except KeyboardInterrupt:
                 print('Interrupted')
                 try:
